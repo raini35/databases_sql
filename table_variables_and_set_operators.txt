@@ -1,0 +1,41 @@
+//table variables within the FROM clause 
+//set operators: union, intersect, and except 
+
+
+select S.sID, sName, GPA, A.cName, enrollment 
+from Student S, College C, Apply A
+where A.sID = S.sID and A.cName = C.cName
+
+select S1.sID, S1.sName, S1.GPA, S2.sID, S2.sName, S2.GPA 
+from Student S1, Student S2
+where S1.GPA = S2.GPA and S1.sID <> S2.sID; //Using 'not' but that gives us duplicates Ex. Amy & Doris and Doris & Amy 
+
+select S1.sID, S1.sName, S1.GPA, S2.sID, S2.sName, S2.GPA 
+from Student S1, Student S2
+where S1.GPA = S2.GPA and S1.sID < S2.sID; //Using 'less' than so that it gets rid of duplicates 
+
+
+select cName as name from College 
+union 
+select sName as name from Student; 
+//output will come out sorted b/c the union operator by default will take out duplicates
+
+
+select cName as name from College 
+union all //using all will output everything with duplicates and all 
+select sName as name from Student; 
+
+
+select sID from Apply where major = 'CS' 
+intersect 
+select sID from Apply where major = 'EE'; 
+
+
+select distinct A1.sId 
+from Apply A1, Apply A2
+where A1.sID = A2.sID and A1.major = 'CS' and A2.major = 'EE'; 
+//outputs the same thing as the intersect operator 
+
+select sID from Apply where major = 'CS' 
+except //this is the minus from relation algebra of SQL
+select sID from Apply where major = 'EE';
