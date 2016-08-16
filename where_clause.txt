@@ -1,0 +1,102 @@
+//you can included nested select statements using "subqueries" 
+
+
+select sID, sName 
+from Student 
+where sID in (select sID from Apply were major = 'CS'); 
+
+
+select distinct Student.sID, sName 
+from Student, Apply 
+where Student.sID = Apply.sID and major = 'CS'; 
+//outputs the same thing as the subquery stated above
+
+
+select sName 
+from Student 
+where sID in (select sID from Apply where major = 'CS'); 
+
+select distinct sName 
+from Student, Apply 
+where Student.sID = Apply.sID and major = 'CS'; 
+//this outputs differently because people who have the same names but different IDs 
+//will be considered duplicates and will be deleted 
+
+
+select GPA 
+from Student 
+where sID in (select sID from Apply where major = 'CS'); 
+
+select distinct GPA 
+from Student, Apply
+where Student.sID = Apply.sID and major = 'CS'; 
+//this has the same problem as the other join. same GPAs will be deleted but we need 
+//those duplicates because the GPAs are from different students 
+
+select sID, sName
+from Student 
+where sID in (select sID from Apply where major = 'CS') 
+	and sID not in (select sID from Apply where major = 'EE'); 
+	
+select sID, sName
+from Student 
+where sID in (select sID from Apply where major = 'CS') 
+	and not sID in (select sID from Apply where major = 'EE'); 
+	
+	
+select cName, state 
+frome College C1 
+where exists (select * from College C2
+			  where C2.state = C1.state and C1.cName <> C2.cname);
+			  
+select cName 
+form College C1 
+where not exists (select * from College C2 
+				  where C2.enrollment > C1.enrollment);  
+				  
+				  
+select sName, GPA 
+from Student 
+were GPA >= all (select GPA from Student); 
+
+
+select cName 
+from College S1
+where not enrollment <= any (select enrollment form College S2
+					where S2.cName <> S1.cName);  
+					
+select sID, sName, sizeHS 
+from Student 
+where sizeHS > any (select sizeHS from Student); 
+//this outputs students who went to highschool that's not the smallest 
+//this works because once the high school gets compared to a smaller number it gets printed
+//but when the smallest high school gets compared theres no number that's smaller 
+//so it does not get printed
+
+
+select sID, sName, sizeHS 
+from Student S1
+where exists (select * from Student S2
+			  where S2.sizeHS < S1.sizeHS)
+//outputs the same thing as the any operator above
+
+
+select sID, sName 
+from Student 
+where sID = any (select sID from Apply where major = 'CS') 
+		and sID <> any (select sID form Apply where major = 'EE') 
+//outputs wrong b/c the second subquery selects all sIDS other than the selected that 
+//applied to major in 'EE' 
+
+
+select sID, sName 
+from Student 
+where sID = any (select sID from Apply where major = 'CS') 
+		and not sID = any (select sID form Apply where major = 'EE') 
+//this outputs correctly because the second subquery selects student ids that 
+//have not applied to EE. it wont include any student that has applied to EE
+
+
+					
+					
+ 
