@@ -36,6 +36,8 @@ from Apply A1, Apply A2
 where A1.sID = A2.sID and A1.major = 'CS' and A2.major = 'EE'; 
 //outputs the same thing as the intersect operator 
 
+
 select sID from Apply where major = 'CS' 
 except //this is the minus from relation algebra of SQL
 select sID from Apply where major = 'EE';
+//outputs the students who applied to 'CS' but not to 'EE' 
