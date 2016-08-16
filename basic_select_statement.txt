@@ -1,0 +1,48 @@
+select sID, sName, GPA
+from Student 
+where GPA > 3.6; 
+
+select distinct sName, major //adding distinct will take out duplicates
+from Student, Apply 
+where Student.sID = Apply.sID
+
+select sname, GPA, decision 
+from Student, Apply 
+where Student.sID = Apply.sID 
+	and sizeHS < 1000 and major = 'CS' and cname = 'Stanford'; 
+	
+select cName //this will run an error because cName is ambiguous and it is included in both relations 
+from College, Apply 
+where College.cName = Apply.cName 
+	and enrollment > 20000 and major = 'CS'; 
+	
+	
+select distinct College.cName //this will run without error 
+from College, Apply 
+where College.cName = Apply.cName 
+	and enrollment > 20000 and major = 'CS'; 
+	
+	
+select Student.sID, sName, GPA, Apply.cName, enrollment 
+from Student, College, Apply 
+where Apply.sID = Student.sID and Apply.cName = College.cName 
+order by GPA desc; //this allows you order the results by descending order of GPA 
+	
+	
+select Student.sID, sName, GPA, Apply.cName, enrollment 
+from Student, College, Apply 
+where Apply.sID = Student.sID and Apply.cName = College.cName 
+order by GPA desc, enrollment; //this allows you order the results by descending order of GPA and then 
+							   //descending order of enrollment 
+							   
+select sID, major 
+from Apply 
+where major like '%bio%';  //like predicate 
+
+select * //this selects all the attributes
+from Apply 
+where major like '%bio%'; 
+	
+	
+select sID, sName, GPA, sizeHS, GPA*(sizeHS/1000.0) as scaledGPA //you can use math in select & use 'as' to rename 
+from Student
