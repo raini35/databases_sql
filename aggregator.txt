@@ -1,0 +1,40 @@
+select Student.sID, count(distinct cName)
+from Student, Apply 
+where Student.sID = Apply.sID 
+group by Student.sID 
+
+select Student.sID sName, cName 
+from Student, Apply 
+where Student.sID = Apply.sID 
+group by Student.sID 
+
+select Student.sID, count(distinct cName)
+from Student, Apply 
+where Student.sID = Apply.sID 
+group by Student.sID 
+union
+select sID, 0
+from Student
+where sID not in (select sID from Apply); 
+
+select cName 
+from Apply 
+group by cName 
+having count(*) < 5; 
+
+select cName 
+from Apply A1
+where 5 > (select count(*) from Apply A2 where A2.cName = A1.cName); 
+
+
+select cName 
+from Apply 
+group by cName 
+having count(distinct sID) < 5;
+
+
+select major 
+from Student, Apply 
+where Student.sID = Apply.sID 
+group by major 
+having max(GPA) < ()select avg(GPA) from Student); 
