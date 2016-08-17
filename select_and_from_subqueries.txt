@@ -1,0 +1,44 @@
+select sID, sName, GPA, GPA*(sizeHS/1000.0) as scaledGPA 
+from Student 
+where GPA * (sizeHS/1000.0) - GPA > 1.0 
+or GPA - GPA*(sizeHS/1000.0) > 1.0; 
+
+
+select sID, sName, GPA, GPA*(sizeHS/1000.0) as scaledGPA 
+from Student 
+where abs(GPA * (sizeHS/1000.0) - GPA) > 1.0; 
+
+select * 
+from (select sID, sName, GPA, GPA*(sizeHS/1000.0) as scaledGPA 
+from Student) G 
+where abs(scaledGPA - GPA) > 1.0; 
+
+select distinct College.cName, state, GPA 
+from College, Apply, Student 
+where College.cName = Apply.cName 
+	and Apply.sID = Student.sID 
+	and GPA >= all 
+			(select GPA from Student, Apply 
+			where Student.sID = Apply.sID
+				and Apply.cName = College.cName);  
+				
+select cName, state 
+(select distinct GPA 
+from Apply, Student 
+where College.cName = Apply.cName 
+	and Apply.sID = Student.sID 
+	and GPA >= all 
+			(select GPA from Student, Apply 
+			where Student.sID = Apply.sID
+				and Apply.cName = College.cName)) as GPA
+from College; 
+
+
+select cName, state 
+(select distinct GPA 
+from Apply, Student 
+where College.cName = Apply.cName 
+	and Apply.sID = Student.sID ) as sName
+from College; 
+//this outputs an error because a subquery in a select must only return one value 
+//since it is only filling up one row 

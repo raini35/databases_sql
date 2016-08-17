@@ -1,0 +1,80 @@
+Explicit Join of tables 
+Inner join On condition 
+Natural Join 
+Inner join Using (attrs) 
+Left | Right | Full Outer Join 
+
+select distinct sName, major
+from Student, Apply 
+where Student.sID = Apply.sID 
+
+select distinct sName, major
+from Student inner join Apply 
+on Student.sID = Apply.sID 
+
+
+select sName, GPA 
+form Student, Apply 
+where Student.sID = Apply.sID 
+	and size HS < 1000 and major = 'CS' and cName = 'Stanford'; 
+	
+select sName, GPA 
+form Student join Apply 
+on Student.sID = Apply.sID 
+where size HS < 1000 and major = 'CS' and cName = 'Stanford'; 
+
+select Apply.sID, sName, GPA, Apply.cName, enrollment 
+from Apply, Student, College
+on Apply.sID = Student.sID and Apply.cName = College.cName; 
+
+
+select Apply.sID, sName, GPA, Apply.cName, enrollment 
+from (Apply join Student on Apply.sID = Student.sID )join College
+on Apply.cName = College.cName; 
+
+
+select distinct sName, major 
+from Student inner join Apply 
+on Student.sID = Apply.sID; 
+
+
+select distinct sName, major 
+from Student natural join Apply;
+//outputs the same thing as query above. we don't need to set the equality and it also 
+//takes out duplicates
+
+select sName, GPA 
+form Student natural join Apply 
+where size HS < 1000 and major = 'CS' and cName = 'Stanford'; 
+
+select sName, GPA 
+form Student join Apply using(sID)
+where size HS < 1000 and major = 'CS' and cName = 'Stanford'; 
+
+select S1.sID, S1.sName, S1.GPA, S2.sID, S2.sName, S2.GPA 
+from Student S1, Student S2 
+where S1.GPA = S2.GPA and S1.sID < S2.sID; 
+
+select S1.sID, S1.sName, S1.GPA, S2.sID, S2.sName, S2.GPA 
+from Student S1 join Student S2 using (GPA)
+where S1.GPA = S2.GPA and S1.sID < S2.sID; 
+
+select * 
+from Student S1 natural join Student S2; 
+
+select sName, sID, cName, major 
+from Student inner join Apply using (sID);
+
+select sName, sID, cName, major 
+from Student left outer join Apply using (sID); 
+//outputs rows that don't have actual values or nulls
+
+select sName, sID, cName, major 
+from Student natural right outer join Apply; 
+
+select sName, sID, cName, major 
+from Student full outer join Apply using (sID); 
+
+
+Commutativity (A op B) = (B op A) 
+Associativity (A op B) op C = A op (B op C)
