@@ -1,0 +1,69 @@
+select CS.avgGPA - NonCS.avgGPA 
+from (select avg(GPA) as avgGPA from Select 
+		where sID in 
+			(select sID from Apply where major = 'CS')) as CS, 
+	(select avg(GPA) as avgGPA from Student 
+		where sID not in 
+			(select sID from Apply where major = 'CS')) as nonCS; 
+			
+			
+			
+select avg(GPA) as avgGPA 
+from Select
+where sID in (select sID from Apply where major = 'CS') as CS; 
+
+
+select avg(GPA) as avgGPA 
+from Select 
+where sID not in (select sID from Apply where major = 'CS') as nonCS; 
+
+
+select CS.avgGPA - NonCs.avgGPA
+from (select avg(GPA) as avgGPA from Select 
+		where sID in 
+			(select sID from Apply where major = 'CS')) as CS, 
+	(select avg(GPA) as avgGPA from Student 
+		where sID not in 
+			(select sID from Apply where major = 'CS')) as nonCS; 
+			
+select cName, count(*) 
+from Apply 
+group by cName; 
+
+select * 
+from Apply 
+order by cName; 
+
+select state, sum(enrollment) 
+from College 
+group by state; 
+
+
+select cName, major, GPA 
+from Student, Apply 
+where Student.sID = ApplysID 
+order by cName, major; 
+
+select cName, major, min(GPA), max(GPA) 
+from Student, Apply
+where Student.sID = Apply.sID
+group by cName, major; 
+
+select mx - mn
+from(select cName, major, min(GPA) as mn, max(GPA) as mx
+from Student, Apply
+where Student.sID = Apply.sID
+group by cName, major) M; 
+
+
+select max(mx - mn)
+from(select cName, major, min(GPA) as mn, max(GPA) as mx
+from Student, Apply
+where Student.sID = Apply.sID
+group by cName, major) M; 
+
+
+select Student.sID, sName, count(distinct cName) 
+from Student, Apply 
+where Student.sID = Apply.sID 
+group by Student.sID 
